@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:team_players/screens/add_team.dart';
 import 'package:team_players/screens/home.dart';
 import 'package:team_players/screens/login.dart';
+import 'package:team_players/screens/players.dart';
 import 'package:team_players/screens/signup.dart';
 
 void main() {
@@ -16,10 +17,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => const Home(),
+        '/': (context) => const AddTeam(),
+        '/players': (context) => const Players(),
         '/addTeam': (context) => const AddTeam(),
         '/home': (context) => const Home(),
-        '/login': (context) => const Signup(),
+        '/login': (context) => const Login(),
         '/signup': (context) => const Signup(),
       },
     );

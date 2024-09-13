@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../model/player.dart';
+
 class GeneralWidgets {
-  static playersItem(String name, BuildContext context) {
+  static playersNameItem(String name) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
@@ -20,6 +22,31 @@ class GeneralWidgets {
             ),
             const SizedBox(width: 20),
             const Icon(Icons.cancel)
+          ],
+        ),
+      ),
+    );
+  }
+
+  static playersItem(Player player) {
+    return Card(
+      color: Colors.grey[200],
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            CircleAvatar(child: Icon(player.image)),
+            const SizedBox(width: 12),
+            Text(
+              player.name,
+              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
+            ),
+            Expanded(child: Container()),
+            const Icon(Icons.delete),
           ],
         ),
       ),

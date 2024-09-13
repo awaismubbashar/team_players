@@ -24,27 +24,26 @@ class _AddTeamState extends State<AddTeam> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+          padding: const EdgeInsets.fromLTRB(20, 35, 20, 0),
           child: Column(
             children: [
+              addTeamText(),
+              const SizedBox(height: 25),
               addTeamMemberText(),
               const SizedBox(height: 10),
               addTeamTextFormField(),
               const SizedBox(height: 10),
               addTeamButton(),
               const SizedBox(height: 20),
-              Container(
-                child: Expanded(
-                  child: MasonryGridView.count(
-                    itemCount: players.length,
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 2,
-                    crossAxisSpacing: 4,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GeneralWidgets.playersItem(
-                          players[index], context);
-                    },
-                  ),
+              Expanded(
+                child: MasonryGridView.count(
+                  itemCount: players.length,
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 2,
+                  crossAxisSpacing: 4,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GeneralWidgets.playersNameItem(players[index]);
+                  },
                 ),
               )
             ],
@@ -76,10 +75,17 @@ class _AddTeamState extends State<AddTeam> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          'Add team member',
+          'Enter team player name',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
         ),
       ],
+    );
+  }
+
+  Text addTeamText() {
+    return const Text(
+      'Add Team Players',
+      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
     );
   }
 
