@@ -13,34 +13,37 @@ class _LoginState extends State<Login> {
   var emailController = TextEditingController();
   bool passwordToggle = true;
 
-  String email = '';
-  String password = '';
+  String? email;
+  String? password;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Form(
-              key: formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  loginText(),
-                  loginDescription(),
-                  const SizedBox(height: 50),
-                  emailTextFormField(),
-                  const SizedBox(height: 20),
-                  passwordTextFormField(),
-                  const SizedBox(height: 5),
-                  forgotPassword(),
-                  const SizedBox(height: 30),
-                  loginButton(),
-                  const SizedBox(height: 5),
-                  notHaveAccountText()
-                ],
+        body: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    loginText(),
+                    loginDescription(),
+                    const SizedBox(height: 50),
+                    emailTextFormField(),
+                    const SizedBox(height: 20),
+                    passwordTextFormField(),
+                    const SizedBox(height: 5),
+                    forgotPassword(),
+                    const SizedBox(height: 30),
+                    loginButton(),
+                    const SizedBox(height: 5),
+                    notHaveAccountText()
+                  ],
+                ),
               ),
             ),
           ),
@@ -52,7 +55,7 @@ class _LoginState extends State<Login> {
   Text loginText() => const Text(
         'Login',
         style: TextStyle(
-            fontSize: 35, fontWeight: FontWeight.bold, color: Colors.blue),
+            fontSize: 40, fontWeight: FontWeight.bold, color: Colors.blue),
       );
 
   Text loginDescription() => const Text('Please sing in to continue');
@@ -72,6 +75,19 @@ class _LoginState extends State<Login> {
       decoration: passwordDecoration(),
       obscureText: passwordToggle,
     );
+  }
+
+  Container forgotPassword() {
+    return Container(
+        alignment: Alignment.bottomRight,
+        child: const Text(
+          'Forgot Password',
+          style: TextStyle(
+            color: Colors.blue,
+            // decoration: TextDecoration.underline,
+            // decorationColor: Colors.blue,
+          ),
+        ));
   }
 
   ElevatedButton loginButton() {
@@ -98,29 +114,18 @@ class _LoginState extends State<Login> {
   }
 
   Row notHaveAccountText() {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Already have an account? '),
-        Text(
-          'Signup',
-          style: TextStyle(color: Colors.blue),
+        const Text('Already have an account?'),
+        TextButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/signup');
+          },
+          child: const Text('Signup', style: TextStyle(color: Colors.blue)),
         )
       ],
     );
-  }
-
-  Container forgotPassword() {
-    return Container(
-        alignment: Alignment.bottomRight,
-        child: const Text(
-          'Forgot Password',
-          style: TextStyle(
-            color: Colors.blue,
-            // decoration: TextDecoration.underline,
-            // decorationColor: Colors.blue,
-          ),
-        ));
   }
 
   InputDecoration emailDecoration() {
