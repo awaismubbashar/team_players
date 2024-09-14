@@ -117,13 +117,12 @@ class _LoginState extends State<Login> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Already have an account?'),
-        TextButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/signup');
-          },
-          child: const Text('Signup', style: TextStyle(color: Colors.blue)),
-        )
+        const Text('Already have an account? '),
+        GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, '/signup');
+            },
+            child: const Text('Signup', style: TextStyle(color: Colors.blue))),
       ],
     );
   }
