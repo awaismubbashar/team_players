@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../viewmodel/login_viewmodel.dart';
+import '../viewmodel/signup_viewmodel.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -92,9 +96,37 @@ class _LoginState extends State<Login> {
 
   ElevatedButton loginButton() {
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         if (formKey.currentState!.validate()) {
-          print("Validated");
+          try {
+            String enteredEmail = emailController.text;
+            String enteredPassword = passwordController.text;
+
+            final loginViewModel = Provider.of<LoginViewModel>(context, listen: false);
+            final loginSuccessful = await loginViewModel.login(enteredEmail, enteredPassword);
+
+            if (loginSuccessful) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Login successful'),
+                  backgroundColor: Colors.green,
+                  duration: Duration(seconds: 2),
+                ),
+              );
+              await Navigator.pushReplacementNamed(context, '/home');
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Invalid email or password'),
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            }
+          } catch (e) {
+            // Handle errors if saving data fails
+            print("Error occurred: $e");
+          }
         } else {
           print("Not Validated");
         }
@@ -120,7 +152,7 @@ class _LoginState extends State<Login> {
         const Text('Already have an account? '),
         GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/signup');
+              Navigator.pushReplacementNamed(context, '/signup');
             },
             child: const Text('Signup', style: TextStyle(color: Colors.blue))),
       ],

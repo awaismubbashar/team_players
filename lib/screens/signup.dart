@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../viewmodel/signup_viewmodel.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -40,7 +42,7 @@ class _SignupState extends State<Signup> {
                     const SizedBox(height: 20),
                     confirmPasswordTextFormField(),
                     const SizedBox(height: 30),
-                    loginButton(),
+                    signupButton(),
                     const SizedBox(height: 10),
                     alreadyAccountText()
                   ],
@@ -65,9 +67,9 @@ class _SignupState extends State<Signup> {
     return TextFormField(
       controller: nameController,
       validator: (value) {
-        if(value!.isEmpty) {
+        if (value!.isEmpty) {
           return 'Name is required';
-        } else if(value.length < 5) {
+        } else if (value.length < 5) {
           return 'Name have at least 5 characters';
         }
       },
@@ -96,8 +98,8 @@ class _SignupState extends State<Signup> {
     return TextFormField(
       controller: confirmPasswordController,
       validator: (value) {
-        if(value != passwordController.text) {
-          return 'Password does not match' ;
+        if (value != passwordController.text) {
+          return 'Password does not match';
         } else {
           return null;
         }
@@ -107,14 +109,32 @@ class _SignupState extends State<Signup> {
     );
   }
 
-  ElevatedButton loginButton() {
+  ElevatedButton signupButton() {
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         if (formKey.currentState!.validate()) {
-
-          print("Validated");
+          try {
+            await Provider.of<SignupViewModel>(context, listen: false)
+                .saveUserData(
+              emailController.text,
+              nameController.text,
+              passwordController.text,
+            );
+            nameController.clear();
+            emailController.clear();
+            passwordController.clear();
+            confirmPasswordController.clear();
+            const SnackBar(
+              content: Text('Signup successful'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+            );
+            await Navigator.pushReplacementNamed(context, '/login');
+          } catch (e) {
+            // Handle errors if saving data fails
+            print("Error occurred: $e");
+          }
         } else {
-          print(emailController.text);
           print("Not Validated");
         }
       },
@@ -139,7 +159,7 @@ class _SignupState extends State<Signup> {
         const Text('Already have an account? '),
         GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, '/login');
+            Navigator.pushReplacementNamed(context, '/login');
           },
           child: const Text(
             'Login',
@@ -171,7 +191,7 @@ class _SignupState extends State<Signup> {
 
   String? emailValidation(String? value) {
     bool emailReg = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(value!);
     if (value.isEmpty) {
       return "Enter email";
