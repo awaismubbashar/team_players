@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,7 +21,8 @@ class _HomeState extends State<Home> {
               const SizedBox(height: 20),
               addTeamButton(),
               const SizedBox(height: 60),
-              playerTeamCard()
+              playerTeamCard(),
+              logoutButton(),
             ],
           ),
         ),
@@ -79,7 +81,9 @@ class _HomeState extends State<Home> {
 
   ElevatedButton addTeamButton() {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, '/addTeam');
+      },
       style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(6), // <-- Radius
@@ -88,6 +92,37 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.blue),
       child: const Text(
         'Add team',
+        style: TextStyle(
+            color: Colors.white, fontWeight: FontWeight.w500, fontSize: 21),
+      ),
+    );
+  }
+
+  ElevatedButton logoutButton() {
+    return ElevatedButton(
+      onPressed: () async {
+        try {
+          final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
+          // await asyncPrefs.clear();
+          Navigator.pushReplacementNamed(context, '/login');
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Logout failed. Please try again.'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      },
+      style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(6), // <-- Radius
+          ),
+          minimumSize: const Size.fromHeight(50),
+          backgroundColor: Colors.blue),
+      child: const Text(
+        'Logout',
         style: TextStyle(
             color: Colors.white, fontWeight: FontWeight.w500, fontSize: 21),
       ),
