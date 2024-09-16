@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:team_players/widgets/general_widgets.dart';
-import '../model/player.dart';
+import 'package:provider/provider.dart';
+import '../viewmodel/add_team_viewmodel.dart';
 
 class Players extends StatefulWidget {
   const Players({super.key});
@@ -10,13 +11,13 @@ class Players extends StatefulWidget {
 }
 
 class _PlayersState extends State<Players> {
-  List<Player> playersList = [
-    Player('Smith', Icons.account_circle),
-    Player('Joseph', Icons.account_circle),
-    Player('Billa', Icons.account_circle),
-    Player('David', Icons.account_circle),
-    Player('Pakola', Icons.account_circle)
-  ];
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      Provider.of<AddTeamViewModel>(context, listen: false).getPlayers();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +39,14 @@ class _PlayersState extends State<Players> {
 
   Expanded playersListView() {
     return Expanded(
-      child: ListView.builder(
-        itemCount: playersList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return GeneralWidgets.playersItem(playersList[index]);
+      child: Consumer<AddTeamViewModel>(
+        builder: (context, viewModel, child) {
+          return ListView.builder(
+            itemCount: viewModel.players.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GeneralWidgets.playersItem(viewModel.players[index]);
+            },
+          );
         },
       ),
     );
@@ -50,7 +55,7 @@ class _PlayersState extends State<Players> {
   Center playerText() {
     return const Center(
       child: Text(
-        'Players',
+        'Your Team Players',
         style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
       ),
     );

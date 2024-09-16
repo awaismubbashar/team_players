@@ -28,7 +28,7 @@ class GeneralWidgets {
     );
   }
 
-  static playersItem(Player player) {
+  static playersItem(String player) {
     return Card(
       color: Colors.grey[200],
       elevation: 2,
@@ -39,10 +39,10 @@ class GeneralWidgets {
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-            CircleAvatar(child: Icon(player.image)),
+            const CircleAvatar(child: Icon(Icons.account_circle)),
             const SizedBox(width: 12),
             Text(
-              player.name,
+              player,
               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
             ),
             Expanded(child: Container()),

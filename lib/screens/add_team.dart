@@ -12,15 +12,16 @@ class AddTeam extends StatefulWidget {
 }
 
 class _AddTeamState extends State<AddTeam> {
+  final playerKey = GlobalKey<FormState>();
   var playerController = TextEditingController();
 
-  List<String> players = [
-    'smith',
-    'joseph',
-    'micle polaacndskcnskjbncks skncdjn',
-    'goli',
-    'goli'
-  ];
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      Provider.of<AddTeamViewModel>(context, listen: false).getPlayers();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,28 +29,37 @@ class _AddTeamState extends State<AddTeam> {
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.fromLTRB(20, 35, 20, 0),
-          child: Column(
-            children: [
-              addTeamText(),
-              const SizedBox(height: 25),
-              addTeamMemberText(),
-              const SizedBox(height: 10),
-              addTeamTextFormField(),
-              const SizedBox(height: 10),
-              addTeamButton(),
-              const SizedBox(height: 20),
-              Expanded(
-                child: MasonryGridView.count(
-                  itemCount: players.length,
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 2,
-                  crossAxisSpacing: 4,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GeneralWidgets.playersNameItem(players[index]);
-                  },
+          child: Form(
+            key: playerKey,
+            child: Column(
+              children: [
+                addTeamText(),
+                const SizedBox(height: 25),
+                addTeamMemberText(),
+                const SizedBox(height: 10),
+                addTeamTextFormField(),
+                const SizedBox(height: 10),
+                addTeamButton(),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: Consumer<AddTeamViewModel>(
+                    builder: (context, viewModel, child) {
+                      return MasonryGridView.count(
+                        itemCount: viewModel.players.length,
+                        // Access players from the viewModel
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 2,
+                        crossAxisSpacing: 4,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GeneralWidgets.playersNameItem(
+                              viewModel.players[index]);
+                        },
+                      );
+                    },
+                  ),
                 ),
-              )
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -78,12 +88,25 @@ class _AddTeamState extends State<AddTeam> {
   TextFormField addTeamTextFormField() {
     return TextFormField(
       controller: playerController,
+      validator: (name) {
+        if (name!.isEmpty) {
+          return 'Enter player name';
+        } else {
+          return null;
+        }
+      },
       decoration: InputDecoration(
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue, width: 1.0),
           ),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey, width: 1.0),
+          ),
+          errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red, width: 1.0),
+          ),
+          focusedErrorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red, width: 1.0),
           ),
           hintText: 'Smith',
           hintStyle: TextStyle(color: Colors.grey[400])),
@@ -94,9 +117,10 @@ class _AddTeamState extends State<AddTeam> {
     return ElevatedButton(
       onPressed: () {
         final playerName = playerController.text;
-        if (playerName.isNotEmpty) {
+        if (playerKey.currentState!.validate()) {
           Provider.of<AddTeamViewModel>(context, listen: false)
               .addPlayers(playerName);
+          playerController.clear();
         }
       },
       style: ElevatedButton.styleFrom(

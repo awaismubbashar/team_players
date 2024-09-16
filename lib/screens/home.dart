@@ -30,40 +30,45 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Column playerTeamCard() {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Card(
-                color: Colors.grey[200],
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Team name',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
-                      ),
-                      Text(
-                        'You have added 8 team members',
-                        style: TextStyle(fontSize: 15),
-                      )
-                    ],
+  GestureDetector playerTeamCard() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/players');
+      },
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Card(
+                  color: Colors.grey[200],
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Team Gladiators',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 25),
+                        ),
+                        Text(
+                          'Click here to see team players',
+                          style: TextStyle(fontSize: 15),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 
