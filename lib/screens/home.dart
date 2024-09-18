@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -107,7 +106,7 @@ class _HomeState extends State<Home> {
     return ElevatedButton(
       onPressed: () async {
         try {
-          final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
+          // final SharedPreferences prefs = await SharedPreferences.getInstance();
           // await asyncPrefs.clear();
           Navigator.pushReplacementNamed(context, '/login');
         } catch (e) {

@@ -41,16 +41,35 @@ class _PlayersState extends State<Players> {
     return Expanded(
       child: Consumer<AddTeamViewModel>(
         builder: (context, viewModel, child) {
+          if (viewModel.isLoading) {
+            // Show a loading indicator while data is being fetched
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (viewModel.players.isEmpty) {
+            return const Center(
+              child: Text('No players found'),
+            );
+          }
+
           return ListView.builder(
             itemCount: viewModel.players.length,
             itemBuilder: (BuildContext context, int index) {
-              return GeneralWidgets.playersItem(viewModel.players[index]);
+              return GeneralWidgets.playersItem(
+                viewModel.players[index],
+                    () {
+                  viewModel.removePlayers(viewModel.players[index]);
+                },
+              );
             },
           );
         },
       ),
     );
   }
+
 
   Center playerText() {
     return const Center(

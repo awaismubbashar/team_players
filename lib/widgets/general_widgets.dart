@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../model/player.dart';
 
 class GeneralWidgets {
-  static playersNameItem(String name) {
+  static playersNameItem(String name, VoidCallback onCancel) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
@@ -21,14 +21,17 @@ class GeneralWidgets {
               ),
             ),
             const SizedBox(width: 20),
-            const Icon(Icons.cancel)
+            IconButton(
+                icon: const Icon(Icons.cancel),
+              onPressed: onCancel,
+            )
           ],
         ),
       ),
     );
   }
 
-  static playersItem(String player) {
+  static playersItem(String player, VoidCallback onCancel) {
     return Card(
       color: Colors.grey[200],
       elevation: 2,
@@ -46,7 +49,10 @@ class GeneralWidgets {
               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
             ),
             Expanded(child: Container()),
-            const Icon(Icons.delete),
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: onCancel,
+            )
           ],
         ),
       ),

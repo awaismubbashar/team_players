@@ -62,11 +62,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _checkLoginStatus() async {
     try {
-      final SharedPreferencesAsync prefs = SharedPreferencesAsync();
-      final email = await prefs.getString('email');
-      final password = await prefs.getString('password');
-
-      print('email pref $email');
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final email = prefs.getString('email');
+      final password = prefs.getString('password');
 
       if (email != null && password != null) {
         Navigator.pushReplacementNamed(context, '/home');

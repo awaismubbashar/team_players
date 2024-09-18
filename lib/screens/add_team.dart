@@ -46,13 +46,16 @@ class _AddTeamState extends State<AddTeam> {
                     builder: (context, viewModel, child) {
                       return MasonryGridView.count(
                         itemCount: viewModel.players.length,
-                        // Access players from the viewModel
                         crossAxisCount: 2,
                         mainAxisSpacing: 2,
                         crossAxisSpacing: 4,
                         itemBuilder: (BuildContext context, int index) {
                           return GeneralWidgets.playersNameItem(
-                              viewModel.players[index]);
+                              viewModel.players[index],
+                                () {
+                              viewModel.removePlayers(viewModel.players[index]);
+                            },
+                          );
                         },
                       );
                     },
