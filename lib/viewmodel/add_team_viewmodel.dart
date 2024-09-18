@@ -1,32 +1,50 @@
 import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/shared_preferences.dart';
 
 class AddTeamViewModel extends ChangeNotifier {
   List<String> players = [];
   bool isLoading = true;
 
-  Future<void> getPlayers() async {
-    final SharedPreferencesAsync prefs = SharedPreferencesAsync();
-    var list = await prefs.getStringList('playersList');
+  AddTeamViewModel() {
+    _initialize();
+  }
 
-    if (list != null) {
+  Future<void> _initialize() async {
+    await CustomSharedPreferences.init();
+    await getPlayers();
+  }
+
+  Future<void> getPlayers() async {
+    try {
+      var list = CustomSharedPreferences.getStringList('playersList') ?? [];
       players = list;
+    } catch (e) {
+      print('Error retrieving players: $e');
+      players = [];
     }
 
-    isLoading = false; // Set loading to false once data is fetched
+    isLoading = false;
     notifyListeners();
   }
-  Future<void> addPlayers(String name) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    players.add(name);
-    await prefs.setStringList('playersList', players);
+  Future<void> addPlayers(String name) async {
+    try {
+      players.add(name);
+      await CustomSharedPreferences.setStringList('playersList', players);
+    } catch (e) {
+      print('Error saving players: $e');
+    }
     notifyListeners();
   }
 
   Future<void> removePlayers(String name) async {
     if (players.contains(name)) {
       players.remove(name);
+      try {
+        await CustomSharedPreferences.setStringList('playersList', players);
+      } catch (e) {
+        print('Error saving players: $e');
+      }
       notifyListeners();
     }
   }

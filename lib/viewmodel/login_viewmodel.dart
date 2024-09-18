@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/shared_preferences.dart';
 
 class LoginViewModel extends ChangeNotifier {
   Future<bool> login(String enteredEmail, String enteredPassword) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final savedEmail = prefs.getString('email');
-      final savedPassword = prefs.getString('password');
+      final savedEmail = CustomSharedPreferences.getString('email');
+      final savedPassword = CustomSharedPreferences.getString('password');
 
       if (savedEmail == enteredEmail && savedPassword == enteredPassword) {
         return true; // Login successful

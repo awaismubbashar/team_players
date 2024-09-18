@@ -4,15 +4,18 @@ import 'package:team_players/screens/home.dart';
 import 'package:team_players/screens/login.dart';
 import 'package:team_players/screens/players.dart';
 import 'package:team_players/screens/signup.dart';
+import 'package:team_players/utils/shared_preferences.dart';
 import 'package:team_players/viewmodel/add_team_viewmodel.dart';
 import 'package:team_players/viewmodel/login_viewmodel.dart';
 import 'package:team_players/viewmodel/signup_viewmodel.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await CustomSharedPreferences.init();
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -62,9 +65,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _checkLoginStatus() async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final email = prefs.getString('email');
-      final password = prefs.getString('password');
+      final email = CustomSharedPreferences.getString('email');
+      final password = CustomSharedPreferences.getString('password');
 
       if (email != null && password != null) {
         Navigator.pushReplacementNamed(context, '/home');
