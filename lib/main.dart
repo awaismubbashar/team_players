@@ -65,8 +65,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _checkLoginStatus() async {
     try {
-      final email = CustomSharedPreferences.getString('email');
-      final password = CustomSharedPreferences.getString('password');
+      final email = CustomSharedPreferences.getString(key: 'email');
+      final password = CustomSharedPreferences.getString(key: 'password');
 
       if (email != null && password != null) {
         Navigator.pushReplacementNamed(context, '/home');

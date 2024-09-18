@@ -16,7 +16,7 @@ class AddTeamViewModel extends ChangeNotifier {
 
   Future<void> getPlayers() async {
     try {
-      var list = CustomSharedPreferences.getStringList('playersList') ?? [];
+      var list = CustomSharedPreferences.getStringList(key: 'playersList') ?? [];
       players = list;
     } catch (e) {
       print('Error retrieving players: $e');
@@ -30,7 +30,7 @@ class AddTeamViewModel extends ChangeNotifier {
   Future<void> addPlayers(String name) async {
     try {
       players.add(name);
-      await CustomSharedPreferences.setStringList('playersList', players);
+      await CustomSharedPreferences.setStringList(key: 'playersList', value: players);
     } catch (e) {
       print('Error saving players: $e');
     }
@@ -41,7 +41,7 @@ class AddTeamViewModel extends ChangeNotifier {
     if (players.contains(name)) {
       players.remove(name);
       try {
-        await CustomSharedPreferences.setStringList('playersList', players);
+        await CustomSharedPreferences.setStringList(key:'playersList', value: players);
       } catch (e) {
         print('Error saving players: $e');
       }
